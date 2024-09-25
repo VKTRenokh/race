@@ -5,7 +5,9 @@ import AppHeader from '@/components/AppHeader.vue'
 
 <template>
   <app-header />
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <component :is="Component" />
+  </router-view>
 </template>
 
 <style scoped></style>

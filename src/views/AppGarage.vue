@@ -10,12 +10,14 @@ garage.loadCars()
 
 <template>
   <create-car-form />
-  <div class="car-list">
-    <app-car
-      v-for="car of garage.cars"
-      :key="car.id"
-      v-bind="car"
-    />
+  <div class="garage-container">
+    <div class="car-list">
+      <app-car
+        v-for="car of garage.cars"
+        :key="car.id"
+        v-bind="car"
+      />
+    </div>
   </div>
 </template>
 
@@ -23,5 +25,15 @@ garage.loadCars()
 .car-list {
   display: flex;
   flex-direction: column;
+}
+
+.garage-container {
+  background-color: var(--color-background-soft);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
 }
 </style>
