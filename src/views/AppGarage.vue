@@ -10,7 +10,17 @@ garage.loadCars()
 <template>
   <h2>Garage</h2>
 
-  <div v-for="car of garage.cars" :key="car.id">
+  <div
+    v-for="car of garage.cars"
+    :key="car.id"
+    class="car-list"
+  >
     <app-car v-bind="car" />
   </div>
 </template>
+
+<style scoped>
+.car-list {
+  display: flex;
+}
+</style>
