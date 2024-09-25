@@ -2,10 +2,10 @@
 import { useGarageStore } from '@/stores/garage'
 
 const garage = useGarageStore()
+
+garage.loadCars()
 </script>
 
 <template>
   <h2>Garage</h2>
-
-  <button @click="garage.log">button</button>
 </template>
