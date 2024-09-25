@@ -8,8 +8,12 @@ const links = [
 <template>
   <header>
     <nav>
-      <ul>
-        <li v-for="link of links" :key="link.path">
+      <ul class="header-links">
+        <li
+          v-for="link of links"
+          :key="link.path"
+          class="header-link"
+        >
           <router-link :to="link.path">
             {{ link.title }}
           </router-link>
@@ -18,3 +22,15 @@ const links = [
     </nav>
   </header>
 </template>
+
+<style scoped>
+.header-links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.header-link {
+  font-size: 1.3rem;
+}
+</style>
