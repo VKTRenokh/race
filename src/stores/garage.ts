@@ -1,16 +1,20 @@
 import type { Car } from '@/types/car'
 import { baseUrl } from '@/utils/base-url'
+import { mande } from 'mande'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+
+const api = mande(baseUrl('/garage'))
 
 export const useGarageStore = defineStore('garage', () => {
   const cars = ref<Car[]>([])
   const error = ref<unknown>()
 
   const loadCars = () =>
-    fetch(baseUrl('/garage'))
-      .then(x => x.json())
-      .then(console.log)
+    api
+      .get<Car[]>()
+      .then(data => (cars.value = data))
+      .catch(err => (error.value = err))
 
   return { loadCars, cars }
 })
