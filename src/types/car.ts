@@ -4,4 +4,4 @@ export interface Car {
   id: number
 }
 
-export type CarWithoutId = Omit<Car, 'id'>
+export type CarDto = Omit<Car, 'id'>

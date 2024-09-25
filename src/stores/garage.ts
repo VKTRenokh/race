@@ -1,4 +1,4 @@
-import type { Car } from '@/types/car'
+import type { Car, CarDto } from '@/types/car'
 import { baseUrl } from '@/utils/base-url'
 import { mande } from 'mande'
 import { defineStore } from 'pinia'
@@ -18,7 +18,7 @@ export const useGarageStore = defineStore('garage', () => {
       .then(data => (cars.value = data))
       .catch(handleError)
 
-  const createCar = (car: Omit<Car, 'id'>) =>
+  const createCar = (car: CarDto) =>
     api.post(car).then(loadCars).catch(handleError)
 
   return { loadCars, createCar, cars }

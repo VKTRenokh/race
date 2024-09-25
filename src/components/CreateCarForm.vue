@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useGarageStore } from '@/stores/garage'
+import type { CarDto } from '@/types/car'
 import { reactive } from 'vue'
 
 const garage = useGarageStore()
 
 const defaultColor = '#000000'
 
-const formData = reactive({
+const formData = reactive<CarDto>({
   color: defaultColor,
   name: ''
 })
