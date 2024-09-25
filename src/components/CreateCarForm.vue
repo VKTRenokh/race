@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import { useGarageStore } from '@/stores/garage'
 import { reactive } from 'vue'
 
+const garage = useGarageStore()
+
+const defaultColor = '#000000'
+
 const formData = reactive({
-  color: '',
+  color: defaultColor,
   name: ''
 })
+
+const resetForm = () => {
+  formData.name = ''
+  formData.color = defaultColor
+}
 
 const onSubmit = (event: Event) => {
   event.preventDefault()
 
-  console.log(formData)
+  garage.createCar(formData).then(resetForm)
 }
 </script>
 
@@ -31,7 +41,9 @@ const onSubmit = (event: Event) => {
       class="form-input"
     />
 
-    <button type="submit" class="form-button">Save</button>
+    <button type="submit" class="form-button">
+      Create
+    </button>
   </form>
 </template>
 
