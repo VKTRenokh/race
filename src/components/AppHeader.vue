@@ -28,9 +28,16 @@ const links = [
   display: flex;
   list-style: none;
   padding: 0;
-}
 
-.header-link {
-  font-size: 1.3rem;
+  .header-link {
+    a {
+      font-size: 1.3rem;
+      border-radius: 10%;
+    }
+
+    .router-link-active {
+      color: hsla(160, 100%, 60%, 1);
+    }
+  }
 }
 </style>
