@@ -9,8 +9,9 @@ garage.loadCars()
 </script>
 
 <template>
-  <create-car-form />
   <div class="garage-container">
+    <create-car-form />
+
     <div class="car-list">
       <app-car
         v-for="car of garage.cars"
@@ -25,9 +26,6 @@ garage.loadCars()
 .car-list {
   display: flex;
   flex-direction: column;
-}
-
-.garage-container {
   background-color: var(--color-background-soft);
   border: 1px solid var(--color-border);
   padding: 1.5rem;
