@@ -1,9 +1,17 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw
+} from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/views/AppGarage.vue')
+  },
+  {
+    path: '/winners',
+    component: () => import('@/views/AppWinners.vue')
   }
 ]
 
