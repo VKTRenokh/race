@@ -5,13 +5,11 @@ import AppHeader from '@/components/AppHeader.vue'
 
 <template>
   <app-header />
-  <div class="main">
-    <router-view v-slot="{ Component }">
-      <transition name="scale">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-  </div>
+  <router-view v-slot="{ Component }">
+    <transition name="scale">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <style scoped>
