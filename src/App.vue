@@ -20,6 +20,7 @@ import AppHeader from '@/components/AppHeader.vue'
 
 .scale-enter-from,
 .scale-leave-to {
+  position: absolute;
   opacity: 0;
   transform: scale(0.8);
 }

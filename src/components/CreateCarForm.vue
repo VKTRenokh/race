@@ -17,8 +17,16 @@ const resetForm = () => {
   formData.color = defaultColor
 }
 
+const isFormValid = () => {
+  return formData.name !== ''
+}
+
 const onSubmit = (event: Event) => {
   event.preventDefault()
+
+  if (!isFormValid()) {
+    return
+  }
 
   garage.createCar(formData).then(resetForm)
 }
@@ -33,7 +41,6 @@ const onSubmit = (event: Event) => {
       v-model="formData.name"
       class="form-input"
     />
-
     <label for="color" class="form-label">Car Color</label>
     <input
       id="color"
@@ -41,7 +48,6 @@ const onSubmit = (event: Event) => {
       v-model="formData.color"
       class="form-input"
     />
-
     <button type="submit" class="form-button">
       Create
     </button>
