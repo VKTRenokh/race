@@ -21,14 +21,17 @@ const isFormValid = () => {
   return formData.name !== ''
 }
 
-const onSubmit = (event: Event) => {
+const onSubmit = async (event: Event) => {
   event.preventDefault()
 
   if (!isFormValid()) {
     return
   }
 
-  garage.createCar(formData).then(resetForm)
+  await garage.createCar(formData)
+
+  resetForm()
+  garage.loadCars()
 }
 </script>
 
