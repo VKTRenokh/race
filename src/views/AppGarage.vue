@@ -2,15 +2,30 @@
 import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
+import { createRandomCar } from '@/utils/create-random-car'
 
 const garage = useGarageStore()
 
 garage.loadCars()
+
+const generateRandomCars = () => {
+  console.log(
+    Array.from({ length: 100 }, () =>
+      garage.createCar(createRandomCar())
+    )
+  )
+}
 </script>
 
 <template>
   <div class="garage-container">
     <create-car-form />
+    <button
+      @click="generateRandomCars()"
+      title="generates 100 random cars"
+    >
+      Create random cars
+    </button>
 
     <div class="car-list">
       <app-car
