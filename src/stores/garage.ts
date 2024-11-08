@@ -18,8 +18,8 @@ export const useGarageStore = defineStore('garage', () => {
       .then(data => (cars.value = data))
       .catch(handleError)
 
-  const createCar = (car: CarDto) =>
+  const postCar = (car: CarDto) =>
     api.post(car).catch(handleError)
 
-  return { loadCars, createCar, cars }
+  return { loadCars, postCar, cars }
 })

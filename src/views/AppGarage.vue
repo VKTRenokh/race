@@ -8,12 +8,14 @@ const garage = useGarageStore()
 
 garage.loadCars()
 
-const generateRandomCars = () => {
-  console.log(
+const generateRandomCars = async () => {
+  await Promise.allSettled(
     Array.from({ length: 100 }, () =>
-      garage.createCar(createRandomCar())
+      garage.postCar(createRandomCar())
     )
   )
+
+  await garage.loadCars()
 }
 </script>
 

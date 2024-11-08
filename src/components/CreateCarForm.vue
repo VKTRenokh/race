@@ -17,18 +17,14 @@ const resetForm = () => {
   formData.color = defaultColor
 }
 
-const isFormValid = () => {
-  return formData.name !== ''
-}
+const isFormValid = () => formData.name !== ''
 
-const onSubmit = async (event: Event) => {
-  event.preventDefault()
-
+const onSubmit = async () => {
   if (!isFormValid()) {
     return
   }
 
-  await garage.createCar(formData)
+  await garage.postCar(formData)
 
   resetForm()
   garage.loadCars()
@@ -36,7 +32,7 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="form-container">
+  <form @submit.prevent="onSubmit" class="form-container">
     <label for="name" class="form-label">Name</label>
     <input
       id="name"
