@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
 import type { Car } from '../types/car'
 
-const props = defineProps<Car>()
+const props = defineProps<Car & { controls?: boolean }>()
+
+const style = reactive({ backgroundColor: props.color })
 </script>
 
 <template>
   <div>
     <h3>{{ props.name }}</h3>
-    <div
-      class="car"
-      :style="{ backgroundColor: props.color }"
-    ></div>
+    <div class="car" :style></div>
   </div>
 </template>
 
