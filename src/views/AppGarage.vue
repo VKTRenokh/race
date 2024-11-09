@@ -17,6 +17,9 @@ const generateRandomCars = async () => {
 
   await garage.loadCars()
 }
+
+const deleteCar = (id: number) =>
+  garage.deleteCar(id).then(garage.loadCars)
 </script>
 
 <template>
@@ -34,6 +37,8 @@ const generateRandomCars = async () => {
         v-for="car of garage.cars"
         :key="car.id"
         v-bind="car"
+        controls
+        @delete="deleteCar(car.id)"
       />
     </div>
   </div>

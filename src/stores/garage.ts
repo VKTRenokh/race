@@ -21,5 +21,8 @@ export const useGarageStore = defineStore('garage', () => {
   const postCar = (car: CarDto) =>
     api.post(car).catch(handleError)
 
-  return { loadCars, postCar, cars }
+  const deleteCar = (id: number) =>
+    api.delete(`/${id}`).catch(handleError)
+
+  return { loadCars, postCar, deleteCar, cars }
 })
