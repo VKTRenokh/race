@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useGarageStore } from '@/stores/garage'
-import type { CarDto } from '@/types/car'
-import { reactive } from 'vue'
+import type { Car, CarDto } from '@/types/car'
+import { reactive, watchEffect, computed } from 'vue'
+
+const props = defineProps<{ selectedCar?: Car }>()
+
+const isEdit = computed(() => !!props.selectedCar)
 
 const garage = useGarageStore()
 
@@ -12,6 +16,15 @@ const formData = reactive<CarDto>({
   name: ''
 })
 
+watchEffect(() => {
+  if (!props.selectedCar) {
+    return
+  }
+
+  formData.name = props.selectedCar.name
+  formData.color = props.selectedCar.color
+})
+
 const resetForm = () => {
   formData.name = ''
   formData.color = defaultColor
@@ -19,14 +32,26 @@ const resetForm = () => {
 
 const isFormValid = () => formData.name !== ''
 
+const editCar = () => {
+  if (!props.selectedCar) {
+    return
+  }
+
+  return garage.editCar(props.selectedCar.id, formData)
+}
+
+const mutate = () =>
+  isEdit.value ? editCar() : garage.postCar(formData)
+
 const onSubmit = async () => {
   if (!isFormValid()) {
     return
   }
 
-  await garage.postCar(formData)
+  await mutate()
 
   resetForm()
+
   garage.loadCars()
 }
 </script>
@@ -48,7 +73,7 @@ const onSubmit = async () => {
       class="form-input"
     />
     <button type="submit" class="form-button">
-      Create
+      {{ isEdit ? 'Edit' : 'Create' }}
     </button>
   </form>
 </template>

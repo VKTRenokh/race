@@ -3,6 +3,10 @@ import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import { createRandomCar } from '@/utils/create-random-car'
+import type { Car } from '@/types/car'
+import { ref } from 'vue'
+
+const selectedCar = ref<Car>()
 
 const garage = useGarageStore()
 
@@ -20,14 +24,18 @@ const generateRandomCars = async () => {
 
 const deleteCar = (id: number) =>
   garage.deleteCar(id).then(garage.loadCars)
+
+const selectCar = (car: Car) => (selectedCar.value = car)
 </script>
 
 <template>
   <div class="garage-container">
-    <create-car-form />
+    <create-car-form :selected-car />
+
     <button
       @click="generateRandomCars()"
       title="generates 100 random cars"
+      class="btn"
     >
       Create random cars
     </button>
@@ -39,6 +47,7 @@ const deleteCar = (id: number) =>
         v-bind="car"
         controls
         @delete="deleteCar(car.id)"
+        @edit="selectCar(car)"
       />
     </div>
   </div>
