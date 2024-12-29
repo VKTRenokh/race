@@ -4,13 +4,19 @@ import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import { createRandomCar } from '@/utils/create-random-car'
 import type { Car } from '@/types/car'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const selectedCar = ref<Car>()
 
 const garage = useGarageStore()
 
+const currentPage = ref(0)
+
 garage.loadCars()
+
+const cars = computed(() =>
+  garage.paginateCars(currentPage.value, 7)
+)
 
 const generateRandomCars = async () => {
   await Promise.allSettled(
@@ -42,7 +48,7 @@ const selectCar = (car: Car) => (selectedCar.value = car)
 
     <div class="car-list">
       <app-car
-        v-for="car of garage.cars"
+        v-for="car of cars"
         :key="car.id"
         v-bind="car"
         controls
@@ -50,6 +56,9 @@ const selectCar = (car: Car) => (selectedCar.value = car)
         @edit="selectCar(car)"
       />
     </div>
+
+    <button @click="currentPage--">&lt;</button>
+    <button @click="currentPage++">&gt;</button>
   </div>
 </template>
 

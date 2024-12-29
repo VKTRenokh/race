@@ -27,5 +27,24 @@ export const useGarageStore = defineStore('garage', () => {
   const editCar = (id: number, car: Partial<CarDto>) =>
     api.put(`/${id}`, car).catch(handleError).then(loadCars)
 
-  return { loadCars, postCar, deleteCar, editCar, cars }
+  const paginateCars = (
+    page: number,
+    carsPerPage: number
+  ) => {
+    const startIndex = page * carsPerPage
+
+    return cars.value.slice(
+      startIndex,
+      startIndex + carsPerPage
+    )
+  }
+
+  return {
+    loadCars,
+    postCar,
+    deleteCar,
+    editCar,
+    paginateCars,
+    cars
+  }
 })
