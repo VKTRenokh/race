@@ -85,7 +85,6 @@ const onSubmit = async () => {
   padding: 1.5rem;
   border-radius: 8px;
   max-width: 400px;
-  margin: 2rem 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s;
 }

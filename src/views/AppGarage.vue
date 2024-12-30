@@ -37,17 +37,21 @@ const selectCar = (car: Car) => (selectedCar.value = car)
 
 <template>
   <div class="garage-container">
-    <create-car-form :selected-car />
+    <div class="controls">
+      <create-car-form :selected-car />
 
-    <button
-      @click="generateRandomCars()"
-      title="generates 100 random cars"
-      class="btn"
-    >
-      Create random cars
-    </button>
+      <div>
+        <button
+          @click="generateRandomCars()"
+          title="generates 100 random cars"
+          class="btn"
+        >
+          Create random cars
+        </button>
 
-    <pagination v-model="currentPage" />
+        <pagination v-model="currentPage" />
+      </div>
+    </div>
 
     <div class="car-list">
       <app-car
@@ -73,5 +77,12 @@ const selectCar = (car: Car) => (selectedCar.value = car)
   margin: 2rem 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s;
+}
+
+.controls {
+  display: flex;
+  align-items: start;
+  margin: 2rem 0;
+  gap: 1rem;
 }
 </style>
