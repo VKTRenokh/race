@@ -5,6 +5,7 @@ import CreateCarForm from '@/components/CreateCarForm.vue'
 import { createRandomCar } from '@/utils/create-random-car'
 import type { Car } from '@/types/car'
 import { ref, computed } from 'vue'
+import Pagination from '@/components/Pagination.vue'
 
 const selectedCar = ref<Car>()
 
@@ -46,6 +47,8 @@ const selectCar = (car: Car) => (selectedCar.value = car)
       Create random cars
     </button>
 
+    <pagination v-model="currentPage" />
+
     <div class="car-list">
       <app-car
         v-for="car of cars"
@@ -56,9 +59,6 @@ const selectCar = (car: Car) => (selectedCar.value = car)
         @edit="selectCar(car)"
       />
     </div>
-
-    <button @click="currentPage--">&lt;</button>
-    <button @click="currentPage++">&gt;</button>
   </div>
 </template>
 
