@@ -39,12 +39,15 @@ export const useGarageStore = defineStore('garage', () => {
     )
   }
 
+  const getCarsAmount = () => cars.value.length
+
   return {
     loadCars,
     postCar,
     deleteCar,
     editCar,
     paginateCars,
+    getCarsAmount,
     cars
   }
 })

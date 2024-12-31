@@ -7,6 +7,8 @@ import type { Car } from '@/types/car'
 import { ref, computed } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 
+const carsAmountPerPage = 7
+
 const selectedCar = ref<Car>()
 
 const garage = useGarageStore()
@@ -16,7 +18,7 @@ const currentPage = ref(0)
 garage.loadCars()
 
 const cars = computed(() =>
-  garage.paginateCars(currentPage.value, 7)
+  garage.paginateCars(currentPage.value, carsAmountPerPage)
 )
 
 const generateRandomCars = async () => {
@@ -54,6 +56,13 @@ const selectCar = (car: Car) => (selectedCar.value = car)
     </div>
 
     <div class="car-list">
+      <h2>
+        {{ garage.getCarsAmount() }} Cars ({{
+          carsAmountPerPage
+        }}
+        per page)
+      </h2>
+
       <app-car
         v-for="car of cars"
         :key="car.id"

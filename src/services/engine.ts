@@ -12,3 +12,6 @@ export const startEngine = (id: number) =>
   engine.patch<StartEngineResponse>(null, {
     query: { id, status: 'started' }
   })
+
+export const driveCar = (id: number) =>
+  engine.patch(null, { query: { id, status: 'drive' } })

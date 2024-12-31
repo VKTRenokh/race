@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { Car } from '../types/car'
-import { startEngine } from '@/services/engine'
+import { startEngine, driveCar } from '@/services/engine'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
@@ -18,6 +18,8 @@ const start = async () => {
   const info = await startEngine(props.id)
 
   const time = info.distance / info.velocity
+
+  const x = await driveCar(props.id)
 }
 </script>
 
