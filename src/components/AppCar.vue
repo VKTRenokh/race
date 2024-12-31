@@ -14,12 +14,54 @@ const emit = defineEmits<{
 
 const style = reactive({ backgroundColor: props.color })
 
+let animation: number | null = null
+let startTime: number | null = null
+let duration: number | null = null
+
+const animate = (time: number) => {
+  if (!startTime) {
+    startTime = time
+  }
+
+  const runTime = time - startTime
+
+  if (!duration) {
+    return
+  }
+
+  const progress = runTime / duration
+
+  const left = window.innerWidth * Math.min(progress, 1)
+
+  console.log('left', left)
+
+  if (!car.value) {
+    return
+  }
+
+  car.value.style.transform = `translateX(${left}px)`
+
+  if (runTime > duration) {
+    return
+  }
+
+  animation = requestAnimationFrame(animate)
+}
+
 const start = async () => {
   const info = await startEngine(props.id)
 
-  const time = info.distance / info.velocity
+  duration = info.distance / info.velocity
 
-  const x = await driveCar(props.id)
+  animation = requestAnimationFrame(animate)
+
+  try {
+    await driveCar(props.id)
+    cancelAnimationFrame(animation)
+  } catch (e) {
+    console.error(e)
+    cancelAnimationFrame(animation)
+  }
 }
 </script>
 
