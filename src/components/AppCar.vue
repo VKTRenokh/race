@@ -18,6 +18,14 @@ let animation: number | null = null
 let startTime: number | null = null
 let duration: number | null = null
 
+const moveCar = (left: number) => {
+  if (!car.value) {
+    return
+  }
+
+  car.value.style.transform = `translateX(${left}px)`
+}
+
 const animate = (time: number) => {
   if (!startTime) {
     startTime = time
@@ -33,13 +41,7 @@ const animate = (time: number) => {
 
   const left = window.innerWidth * Math.min(progress, 1)
 
-  console.log('left', left)
-
-  if (!car.value) {
-    return
-  }
-
-  car.value.style.transform = `translateX(${left}px)`
+  moveCar(left)
 
   if (runTime > duration) {
     return
