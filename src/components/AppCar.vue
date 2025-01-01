@@ -7,6 +7,8 @@ const props = defineProps<Car & { controls?: boolean }>()
 
 const car = ref<HTMLElement>()
 
+const isBroken = ref(false)
+
 const emit = defineEmits<{
   (e: 'delete'): void
   (e: 'edit'): void
@@ -22,6 +24,7 @@ const style = reactive({
 
 const instance = getCurrentInstance()
 
+// TODO: refactor this mess
 let animation: number | null = null
 let startTime: number | null = null
 let duration: number | null = null
@@ -50,6 +53,7 @@ const animate = (time: number) => {
   if (!instance?.parent?.vnode?.el) {
     return
   }
+
   const element = instance.parent.vnode.el
 
   const left =
@@ -61,7 +65,6 @@ const animate = (time: number) => {
   moveCar(left)
 
   if (runTime > duration) {
-    console.log('finish')
     return
   }
 
@@ -78,14 +81,14 @@ const start = async () => {
   try {
     await driveCar(props.id)
   } catch (e) {
-    console.error(e)
+    isBroken.value = true
     cancelAnimationFrame(animation)
   }
 }
 </script>
 
 <template>
-  <div>
+  <div :class="{ broken: isBroken }">
     <h3>{{ props.name }}</h3>
     <div class="car" :style ref="car"></div>
   </div>
@@ -99,5 +102,11 @@ const start = async () => {
 <style scoped>
 .car {
   border-radius: 25%;
+}
+
+.broken {
+  h3 {
+    color: rgba(194, 15, 15, 1);
+  }
 }
 </style>
