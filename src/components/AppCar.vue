@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, getCurrentInstance } from 'vue'
 import type { Car } from '../types/car'
 import { startEngine, driveCar } from '@/services/engine'
 
@@ -12,7 +12,15 @@ const emit = defineEmits<{
   (e: 'edit'): void
 }>()
 
-const style = reactive({ backgroundColor: props.color })
+const carSize = 50
+
+const style = reactive({
+  backgroundColor: props.color,
+  width: `${carSize}px`,
+  height: `${carSize}px`
+})
+
+const instance = getCurrentInstance()
 
 let animation: number | null = null
 let startTime: number | null = null
@@ -39,11 +47,21 @@ const animate = (time: number) => {
 
   const progress = runTime / duration
 
-  const left = window.innerWidth * Math.min(progress, 1)
+  if (!instance?.parent?.vnode?.el) {
+    return
+  }
+  const element = instance.parent.vnode.el
+
+  const left =
+    (window.innerWidth -
+      (window.innerWidth - element.clientWidth) -
+      carSize * 2) *
+    Math.min(progress, 1)
 
   moveCar(left)
 
   if (runTime > duration) {
+    console.log('finish')
     return
   }
 
@@ -59,7 +77,6 @@ const start = async () => {
 
   try {
     await driveCar(props.id)
-    cancelAnimationFrame(animation)
   } catch (e) {
     console.error(e)
     cancelAnimationFrame(animation)
@@ -81,8 +98,6 @@ const start = async () => {
 
 <style scoped>
 .car {
-  width: 50px;
-  height: 50px;
   border-radius: 25%;
 }
 </style>
