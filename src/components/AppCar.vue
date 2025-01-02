@@ -10,12 +10,11 @@ import {
 import type { Car } from '../types/car'
 import { startEngine, driveCar } from '@/services/engine'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
+import { resetAbortReason } from '@/constants/reset-abort-reason'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
 const car = ref<HTMLElement>()
-
-const resetReason = 'reset'
 
 const raceInfo = inject(RACE_INFO_KEY)
 
@@ -90,12 +89,7 @@ const animate = (time: number) => {
 }
 
 const reset = () => {
-  controller.abort(resetReason)
-
-  moveCar(0)
-
-  isBroken.value = false
-  isDriving.value = false
+  controller.abort(resetAbortReason)
 
   if (!animation) {
     return
@@ -111,7 +105,11 @@ const handleError = (e: unknown) => {
 
   cancelAnimationFrame(animation)
 
-  if (e === resetReason) {
+  if (e === resetAbortReason) {
+    moveCar(0)
+
+    isBroken.value = false
+    isDriving.value = false
     return
   }
 
@@ -172,9 +170,7 @@ watchEffect(() => {
     <button :disabled="isDriving" @click="start">
       Start
     </button>
-    <button :disabled="!isDriving" @click="reset">
-      Reset
-    </button>
+    <button @click="reset">Reset</button>
   </div>
 </template>
 

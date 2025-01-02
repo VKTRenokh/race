@@ -7,6 +7,7 @@ import { ref, computed, reactive, provide } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import type { RaceInfo } from '@/types/race-info'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
+import { resetAbortReason } from '@/constants/reset-abort-reason'
 
 const raceInfo = reactive<RaceInfo>({
   isRacing: false
@@ -43,6 +44,16 @@ const startRace = () => {
   raceInfo.isRacing = true
   raceInfo.controller = new AbortController()
 }
+
+const reset = () => {
+  if (!raceInfo.controller) {
+    return
+  }
+
+  raceInfo.controller.abort(resetAbortReason)
+
+  raceInfo.isRacing = false
+}
 </script>
 
 <template>
@@ -64,6 +75,8 @@ const startRace = () => {
         <button class="btn race" @click="startRace">
           Race
         </button>
+
+        <button class="btn" @click="reset">Reset</button>
       </div>
     </div>
 
@@ -107,7 +120,8 @@ const startRace = () => {
   gap: 1rem;
 }
 
-.btn.race {
-  margin-top: 0.6rem;
+.btn {
+  margin: 0.6rem 0;
+  margin-right: 0.4rem;
 }
 </style>
