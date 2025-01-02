@@ -10,7 +10,7 @@ const car = ref<HTMLElement>()
 const isBroken = ref(false)
 const isDriving = ref(false)
 
-const controller = new AbortController()
+let controller: AbortController
 
 const emit = defineEmits<{
   (e: 'delete'): void
@@ -107,12 +107,11 @@ const handleError = (e: unknown) => {
 }
 
 const start = async () => {
+  controller = new AbortController()
+
   isDriving.value = true
 
-  const info = await startEngine(
-    props.id,
-    controller.signal
-  )
+  const info = await startEngine(props.id)
 
   duration = info.distance / info.velocity
 

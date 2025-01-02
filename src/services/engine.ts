@@ -8,13 +8,9 @@ export interface StartEngineResponse {
   distance: number
 }
 
-export const startEngine = (
-  id: number,
-  signal: AbortSignal
-) =>
+export const startEngine = (id: number) =>
   engine.patch<StartEngineResponse>(null, {
-    query: { id, status: 'started' },
-    signal
+    query: { id, status: 'started' }
   })
 
 export const driveCar = (id: number, signal: AbortSignal) =>
