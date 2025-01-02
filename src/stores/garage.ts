@@ -1,5 +1,6 @@
 import { garage } from '@/services/garage'
 import type { Car, CarDto } from '@/types/car'
+import { createRandomCar } from '@/utils/create-random-car'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -41,6 +42,13 @@ export const useGarageStore = defineStore('garage', () => {
 
   const getCarsAmount = () => cars.value.length
 
+  const generateRandomCars = () =>
+    Promise.allSettled(
+      Array.from({ length: 100 }, () =>
+        postCar(createRandomCar())
+      )
+    )
+
   return {
     loadCars,
     postCar,
@@ -48,6 +56,7 @@ export const useGarageStore = defineStore('garage', () => {
     editCar,
     paginateCars,
     getCarsAmount,
+    generateRandomCars,
     cars
   }
 })

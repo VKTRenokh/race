@@ -2,10 +2,17 @@
 import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
-import { createRandomCar } from '@/utils/create-random-car'
 import type { Car } from '@/types/car'
-import { ref, computed } from 'vue'
+import { ref, computed, reactive, provide } from 'vue'
 import Pagination from '@/components/Pagination.vue'
+import type { RaceInfo } from '@/types/race-info'
+import { RACE_INFO_KEY } from '@/constants/race-info-key'
+
+const raceInfo = reactive<RaceInfo>({
+  isRacing: false
+})
+
+provide(RACE_INFO_KEY, raceInfo)
 
 const carsAmountPerPage = 7
 
@@ -22,11 +29,7 @@ const cars = computed(() =>
 )
 
 const generateRandomCars = async () => {
-  await Promise.allSettled(
-    Array.from({ length: 100 }, () =>
-      garage.postCar(createRandomCar())
-    )
-  )
+  await garage.generateRandomCars()
 
   await garage.loadCars()
 }
@@ -35,6 +38,11 @@ const deleteCar = (id: number) =>
   garage.deleteCar(id).then(garage.loadCars)
 
 const selectCar = (car: Car) => (selectedCar.value = car)
+
+const startRace = () => {
+  raceInfo.isRacing = true
+  raceInfo.controller = new AbortController()
+}
 </script>
 
 <template>
@@ -52,6 +60,10 @@ const selectCar = (car: Car) => (selectedCar.value = car)
         </button>
 
         <pagination v-model="currentPage" />
+
+        <button class="btn race" @click="startRace">
+          Race
+        </button>
       </div>
     </div>
 
@@ -93,5 +105,9 @@ const selectCar = (car: Car) => (selectedCar.value = car)
   align-items: start;
   margin: 2rem 0;
   gap: 1rem;
+}
+
+.btn.race {
+  margin-top: 0.6rem;
 }
 </style>

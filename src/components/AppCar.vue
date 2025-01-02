@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { reactive, ref, getCurrentInstance } from 'vue'
+import {
+  reactive,
+  toRefs,
+  ref,
+  getCurrentInstance,
+  inject,
+  watchEffect
+} from 'vue'
 import type { Car } from '../types/car'
 import { startEngine, driveCar } from '@/services/engine'
+import { RACE_INFO_KEY } from '@/constants/race-info-key'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
 const car = ref<HTMLElement>()
+
+const resetReason = 'reset'
+
+const raceInfo = inject(RACE_INFO_KEY)
 
 const isBroken = ref(false)
 const isDriving = ref(false)
@@ -78,7 +90,7 @@ const animate = (time: number) => {
 }
 
 const reset = () => {
-  controller.abort('reset')
+  controller.abort(resetReason)
 
   moveCar(0)
 
@@ -99,7 +111,7 @@ const handleError = (e: unknown) => {
 
   cancelAnimationFrame(animation)
 
-  if (e === 'reset') {
+  if (e === resetReason) {
     return
   }
 
@@ -107,7 +119,7 @@ const handleError = (e: unknown) => {
 }
 
 const start = async () => {
-  controller = new AbortController()
+  controller = raceInfo?.controller ?? new AbortController()
 
   isDriving.value = true
 
@@ -127,6 +139,20 @@ const start = async () => {
     isDriving.value = false
   }
 }
+
+watchEffect(() => {
+  if (!raceInfo) {
+    return
+  }
+
+  const info = toRefs(raceInfo)
+
+  if (!info.isRacing.value) {
+    return
+  }
+
+  start()
+})
 </script>
 
 <template>
@@ -134,7 +160,11 @@ const start = async () => {
     <h3 class="car-name">{{ props.name }}</h3>
     <div class="car" :style ref="car"></div>
   </div>
-  <div class="controls" v-if="props.controls">
+  <div
+    class="controls"
+    :style="{ opacity: raceInfo?.isRacing ? 0 : undefined }"
+    v-if="props.controls"
+  >
     <button :enabled="isDriving" @click="emit('edit')">
       Edit
     </button>
