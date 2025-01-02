@@ -7,7 +7,9 @@ import AppHeader from '@/components/AppHeader.vue'
   <app-header />
   <router-view v-slot="{ Component }">
     <transition name="scale">
-      <component :is="Component" />
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
     </transition>
   </router-view>
 </template>

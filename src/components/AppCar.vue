@@ -37,6 +37,15 @@ const moveCar = (left: number) => {
   car.value.style.transform = `translateX(${left}px)`
 }
 
+const calculateLeft = (
+  progress: number,
+  clientWidth: number
+) =>
+  (window.innerWidth -
+    (window.innerWidth - clientWidth) -
+    carSize * 2) *
+  Math.min(progress, 1)
+
 const animate = (time: number) => {
   if (!startTime) {
     startTime = time
@@ -56,13 +65,7 @@ const animate = (time: number) => {
 
   const element = instance.parent.vnode.el
 
-  const left =
-    (window.innerWidth -
-      (window.innerWidth - element.clientWidth) -
-      carSize * 2) *
-    Math.min(progress, 1)
-
-  moveCar(left)
+  moveCar(calculateLeft(progress, element.clientWidth))
 
   if (runTime > duration) {
     return
@@ -80,6 +83,7 @@ const start = async () => {
 
   try {
     await driveCar(props.id)
+    cancelAnimationFrame(animation)
   } catch (e) {
     isBroken.value = true
     cancelAnimationFrame(animation)
