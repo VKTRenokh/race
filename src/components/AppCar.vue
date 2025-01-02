@@ -8,6 +8,9 @@ const props = defineProps<Car & { controls?: boolean }>()
 const car = ref<HTMLElement>()
 
 const isBroken = ref(false)
+const isDriving = ref(false)
+
+const controller = new AbortController()
 
 const emit = defineEmits<{
   (e: 'delete'): void
@@ -74,42 +77,86 @@ const animate = (time: number) => {
   animation = requestAnimationFrame(animate)
 }
 
+const reset = () => {
+  controller.abort('reset')
+
+  moveCar(0)
+
+  isBroken.value = false
+  isDriving.value = false
+
+  if (!animation) {
+    return
+  }
+
+  cancelAnimationFrame(animation)
+}
+
+const handleError = (e: unknown) => {
+  if (!animation) {
+    return
+  }
+
+  cancelAnimationFrame(animation)
+
+  if (e === 'reset') {
+    return
+  }
+
+  isBroken.value = true
+}
+
 const start = async () => {
-  const info = await startEngine(props.id)
+  isDriving.value = true
+
+  const info = await startEngine(
+    props.id,
+    controller.signal
+  )
 
   duration = info.distance / info.velocity
 
   animation = requestAnimationFrame(animate)
 
   try {
-    await driveCar(props.id)
+    await driveCar(props.id, controller.signal)
+
     cancelAnimationFrame(animation)
   } catch (e) {
-    isBroken.value = true
-    cancelAnimationFrame(animation)
+    handleError(e)
+  } finally {
+    isDriving.value = false
   }
 }
 </script>
 
 <template>
   <div :class="{ broken: isBroken }">
-    <h3>{{ props.name }}</h3>
+    <h3 class="car-name">{{ props.name }}</h3>
     <div class="car" :style ref="car"></div>
   </div>
   <div class="controls" v-if="props.controls">
-    <button @click="emit('edit')">Edit</button>
+    <button :enabled="isDriving" @click="emit('edit')">
+      Edit
+    </button>
     <button @click="emit('delete')">Delete</button>
-    <button @click="start">Start</button>
+    <button :disabled="isDriving" @click="start">
+      Start
+    </button>
+    <button :disabled="!isDriving" @click="reset">
+      Reset
+    </button>
   </div>
 </template>
 
 <style scoped>
 .car {
   border-radius: 25%;
+  margin: 0.2rem 0;
 }
 
 .broken {
-  h3 {
+  .car-name {
     color: rgba(194, 15, 15, 1);
   }
 }
