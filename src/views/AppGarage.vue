@@ -23,16 +23,18 @@ const garage = useGarageStore()
 
 const currentPage = ref(0)
 
-const finishers: Car[] = []
+const finishers = ref<Car[]>([])
 
 const raceInfo = reactive<RaceInfo>({
   isRacing: false,
   finish: car => {
-    if (finishers.length === 0) {
+    if (finishers.value.length === 0) {
       console.log(`${car.name} finished first!`)
     }
 
-    finishers.push(car)
+    finishers.value.push(car)
+
+    console.log(JSON.parse(JSON.stringify(finishers.value)))
   }
 })
 
@@ -67,6 +69,8 @@ const reset = () => {
   }
 
   raceInfo.controller.abort(resetAbortReason)
+
+  finishers.value = []
 
   raceInfo.isRacing = false
 }

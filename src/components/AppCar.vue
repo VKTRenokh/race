@@ -103,6 +103,10 @@ const handleReset = () => {
 
   isBroken.value = false
   isDriving.value = false
+
+  animation = null
+  startTime = null
+  duration = null
 }
 
 const handleError = (e: unknown) => {
@@ -143,6 +147,7 @@ const start = async () => {
     await driveCar(props.id, controller.signal)
 
     cancelAnimationFrame(animation)
+
     handleFinish()
   } catch (e) {
     handleError(e)
