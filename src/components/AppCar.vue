@@ -98,6 +98,13 @@ const reset = () => {
   cancelAnimationFrame(animation)
 }
 
+const handleReset = () => {
+  moveCar(0)
+
+  isBroken.value = false
+  isDriving.value = false
+}
+
 const handleError = (e: unknown) => {
   if (!animation) {
     return
@@ -106,10 +113,7 @@ const handleError = (e: unknown) => {
   cancelAnimationFrame(animation)
 
   if (e === resetAbortReason) {
-    moveCar(0)
-
-    isBroken.value = false
-    isDriving.value = false
+    handleReset()
     return
   }
 
@@ -146,6 +150,7 @@ watchEffect(() => {
   const info = toRefs(raceInfo)
 
   if (!info.isRacing.value) {
+    handleReset()
     return
   }
 
