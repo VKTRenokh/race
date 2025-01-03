@@ -3,7 +3,13 @@ import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import type { Car } from '@/types/car'
-import { ref, computed, reactive, provide } from 'vue'
+import {
+  ref,
+  computed,
+  reactive,
+  provide,
+  watch
+} from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import type { RaceInfo } from '@/types/race-info'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
@@ -25,11 +31,12 @@ const raceInfo = reactive<RaceInfo>({
     if (finishers.length === 0) {
       console.log(`${car.name} finished first!`)
     }
+
     finishers.push(car)
   }
 })
 
-// TODO: rename this dumb race info key
+// TODO: rename this race info key
 provide(RACE_INFO_KEY, raceInfo)
 
 garage.loadCars()
@@ -63,6 +70,8 @@ const reset = () => {
 
   raceInfo.isRacing = false
 }
+
+watch(currentPage, () => reset())
 </script>
 
 <template>
@@ -81,7 +90,11 @@ const reset = () => {
 
         <pagination v-model="currentPage" />
 
-        <button class="btn race" @click="startRace">
+        <button
+          class="btn"
+          @click="startRace"
+          :disabled="raceInfo.isRacing"
+        >
           Race
         </button>
 
