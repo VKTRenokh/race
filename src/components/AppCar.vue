@@ -120,6 +120,14 @@ const handleError = (e: unknown) => {
   isBroken.value = true
 }
 
+const handleFinish = () => {
+  if (!raceInfo) {
+    return
+  }
+
+  raceInfo.finish(props)
+}
+
 const start = async () => {
   controller = raceInfo?.controller ?? new AbortController()
 
@@ -135,6 +143,7 @@ const start = async () => {
     await driveCar(props.id, controller.signal)
 
     cancelAnimationFrame(animation)
+    handleFinish()
   } catch (e) {
     handleError(e)
   } finally {

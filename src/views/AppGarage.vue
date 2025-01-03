@@ -9,12 +9,6 @@ import type { RaceInfo } from '@/types/race-info'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
 
-const raceInfo = reactive<RaceInfo>({
-  isRacing: false
-})
-
-provide(RACE_INFO_KEY, raceInfo)
-
 const carsAmountPerPage = 7
 
 const selectedCar = ref<Car>()
@@ -22,6 +16,21 @@ const selectedCar = ref<Car>()
 const garage = useGarageStore()
 
 const currentPage = ref(0)
+
+const finishers: Car[] = []
+
+const raceInfo = reactive<RaceInfo>({
+  isRacing: false,
+  finish: car => {
+    if (finishers.length === 0) {
+      console.log(`${car.name} finished first!`)
+    }
+    finishers.push(car)
+  }
+})
+
+// TODO: rename this dumb race info key
+provide(RACE_INFO_KEY, raceInfo)
 
 garage.loadCars()
 
