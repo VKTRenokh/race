@@ -1,4 +1,4 @@
-import { garage } from '@/services/garage'
+import { garage, paginateCars } from '@/services/garage'
 import type { Car, CarDto } from '@/types/car'
 import { createRandomCar } from '@/utils/create-random-car'
 import { defineStore } from 'pinia'
@@ -8,12 +8,17 @@ export const useGarageStore = defineStore('garage', () => {
   const cars = ref<Car[]>([])
   const error = ref<unknown>()
 
+  const page = ref(0)
+  const total = ref<number>()
+
   const handleError = (err: unknown) => (error.value = err)
 
   const loadCars = () =>
-    garage
-      .get<Car[]>()
-      .then(data => (cars.value = data))
+    paginateCars(page.value, 7)
+      .then(data => {
+        cars.value = data.cars
+        total.value = data.total
+      })
       .catch(handleError)
 
   const postCar = (car: CarDto) =>
@@ -28,20 +33,6 @@ export const useGarageStore = defineStore('garage', () => {
       .catch(handleError)
       .then(loadCars)
 
-  const paginateCars = (
-    page: number,
-    carsPerPage: number
-  ) => {
-    const startIndex = page * carsPerPage
-
-    return cars.value.slice(
-      startIndex,
-      startIndex + carsPerPage
-    )
-  }
-
-  const getCarsAmount = () => cars.value.length
-
   const generateRandomCars = () =>
     Promise.allSettled(
       Array.from({ length: 100 }, () =>
@@ -54,9 +45,9 @@ export const useGarageStore = defineStore('garage', () => {
     postCar,
     deleteCar,
     editCar,
-    paginateCars,
-    getCarsAmount,
     generateRandomCars,
-    cars
+    cars,
+    page,
+    total
   }
 })

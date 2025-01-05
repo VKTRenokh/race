@@ -108,9 +108,7 @@ watch(currentPage, () => reset())
 
     <div class="car-list">
       <h2>
-        {{ garage.getCarsAmount() }} Cars ({{
-          carsAmountPerPage
-        }}
+        {{ garage.total }} Cars ({{ carsAmountPerPage }}
         per page)
       </h2>
 
