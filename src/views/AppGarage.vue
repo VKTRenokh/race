@@ -3,25 +3,16 @@ import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import type { Car } from '@/types/car'
-import {
-  ref,
-  computed,
-  reactive,
-  provide,
-  watch
-} from 'vue'
+import { ref, reactive, provide, watch } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import type { RaceInfo } from '@/types/race-info'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
-
-const carsAmountPerPage = 7
+import { carsAmountPerPage } from '@/constants/cars-amount-per-page'
 
 const selectedCar = ref<Car>()
 
 const garage = useGarageStore()
-
-const currentPage = ref(0)
 
 const finishers = ref<Car[]>([])
 
@@ -33,8 +24,6 @@ const raceInfo = reactive<RaceInfo>({
     }
 
     finishers.value.push(car)
-
-    console.log(JSON.parse(JSON.stringify(finishers.value)))
   }
 })
 
@@ -42,10 +31,6 @@ const raceInfo = reactive<RaceInfo>({
 provide(RACE_INFO_KEY, raceInfo)
 
 garage.loadCars()
-
-const cars = computed(() =>
-  garage.paginateCars(currentPage.value, carsAmountPerPage)
-)
 
 const generateRandomCars = async () => {
   await garage.generateRandomCars()
@@ -75,7 +60,13 @@ const reset = () => {
   raceInfo.isRacing = false
 }
 
-watch(currentPage, () => reset())
+watch(
+  () => garage.page,
+  () => {
+    garage.loadCars()
+    reset()
+  }
+)
 </script>
 
 <template>
@@ -92,7 +83,7 @@ watch(currentPage, () => reset())
           Create random cars
         </button>
 
-        <pagination v-model="currentPage" />
+        <pagination v-model="garage.page" />
 
         <button
           class="btn"
@@ -113,7 +104,7 @@ watch(currentPage, () => reset())
       </h2>
 
       <app-car
-        v-for="car of cars"
+        v-for="car of garage.cars"
         :key="car.id"
         v-bind="car"
         controls
