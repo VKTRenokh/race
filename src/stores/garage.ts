@@ -31,8 +31,8 @@ export const useGarageStore = defineStore('garage', () => {
   const editCar = (id: number, car: Partial<CarDto>) =>
     garage
       .put(`/${id}`, car)
-      .catch(handleError)
       .then(loadCars)
+      .catch(handleError)
 
   const generateRandomCars = () =>
     Promise.allSettled(

@@ -3,7 +3,13 @@ import { useGarageStore } from '@/stores/garage'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import type { Car } from '@/types/car'
-import { ref, reactive, provide, watch } from 'vue'
+import {
+  ref,
+  reactive,
+  provide,
+  watch,
+  computed
+} from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import type { RaceInfo } from '@/types/race-info'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
@@ -15,6 +21,8 @@ const selectedCar = ref<Car>()
 const garage = useGarageStore()
 
 const finishers = ref<Car[]>([])
+
+const winner = computed(() => finishers.value[0])
 
 const raceInfo = reactive<RaceInfo>({
   isRacing: false,
@@ -102,6 +110,10 @@ watch(
         {{ garage.total }} Cars ({{ carsAmountPerPage }}
         per page)
       </h2>
+
+      <div v-if="winner" class="text-important">
+        {{ winner.name }} came first!
+      </div>
 
       <app-car
         v-for="car of garage.cars"

@@ -26,7 +26,7 @@ export const paginateCars = async (
 
   const cars = await response.json()
 
-  const total = +-+-+-+(
+  const total = +(
     response.headers.get(totalCarsHeaderKey) ?? 0
   )
 
