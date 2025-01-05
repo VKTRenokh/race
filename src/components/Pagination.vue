@@ -1,13 +1,16 @@
 <script setup lang="ts">
 const page = defineModel<number>({ default: 0 })
-
-const decrement = () =>
-  (page.value = page.value === 0 ? 0 : page.value - 1)
 </script>
 
 <template>
   <div class="pagination">
-    <button @click="decrement" class="btn">&lt;</button>
+    <button
+      :disabled="page === 0"
+      @click="page--"
+      class="btn"
+    >
+      &lt;
+    </button>
     <button @click="page++" class="btn">&gt;</button>
   </div>
 </template>
