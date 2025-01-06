@@ -11,7 +11,7 @@ export const createPagination =
   async (
     page: number,
     limit: number
-  ): Promise<Paginated<T[]>> => {
+  ): Promise<Paginated<T>> => {
     const response = await mande.get<T[], 'response'>({
       responseAs: 'response',
       query: { _page: page, _limit: limit }

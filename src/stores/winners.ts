@@ -1,5 +1,7 @@
-import { winners } from '@/services/winners'
-import { getCar } from '@/services/garage'
+import {
+  paginateWinnerCars,
+  winners
+} from '@/services/winners'
 import type { CreateWinnerDto } from '@/types/winners'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -9,22 +11,11 @@ export const useWinnersStore = defineStore(
   () => {
     const page = ref(0)
 
+    // TODO: rename `CreateWinnerDto`
     const add = (dto: CreateWinnerDto) => winners.post(dto)
 
-    // TODO: rename `CreateWinnerDto`
-    const loadWinners = async () => {
-      const data = await winners.get<CreateWinnerDto[]>()
-
-      const fullData = await Promise.all(
-        data.map(async winner => {
-          const car = await getCar(winner.id)
-
-          return { ...winner, ...car }
-        })
-      )
-
-      return fullData
-    }
+    const loadWinners = async () =>
+      paginateWinnerCars(page.value, 10)
 
     return { add, loadWinners, page }
   }
