@@ -2,10 +2,13 @@ import { winners } from '@/services/winners'
 import { getCar } from '@/services/garage'
 import type { CreateWinnerDto } from '@/types/winners'
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useWinnersStore = defineStore(
   'winners',
   () => {
+    const page = ref(0)
+
     const add = (dto: CreateWinnerDto) => winners.post(dto)
 
     // TODO: rename `CreateWinnerDto`
@@ -23,6 +26,6 @@ export const useWinnersStore = defineStore(
       return fullData
     }
 
-    return { add, loadWinners }
+    return { add, loadWinners, page }
   }
 )

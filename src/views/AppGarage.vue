@@ -109,13 +109,14 @@ watch(
     </div>
 
     <div class="car-list">
-      <h2>
-        {{ garage.total }} Cars ({{ carsAmountPerPage }}
-        per page)
-      </h2>
-
-      <div v-if="winner" class="text-important">
-        {{ winner.name }} came first!
+      <div class="title-block">
+        <h2>
+          {{ garage.total }} Cars ({{ carsAmountPerPage }}
+          per page)
+        </h2>
+        <span v-if="winner" class="text-important">
+          {{ winner.name }} went first!
+        </span>
       </div>
 
       <app-car
@@ -141,6 +142,12 @@ watch(
   margin: 2rem 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s;
+
+  .title-block {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
 }
 
 .controls {
