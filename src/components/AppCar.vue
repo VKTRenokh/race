@@ -125,7 +125,7 @@ const handleError = (e: unknown) => {
 }
 
 const handleFinish = () => {
-  if (!raceInfo) {
+  if (!raceInfo?.isRacing) {
     return
   }
 
