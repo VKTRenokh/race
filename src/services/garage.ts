@@ -1,4 +1,4 @@
-import type { Car } from '@/types/car'
+import { type Car } from '@/types/car'
 import { baseUrl } from '@/utils/base-url'
 import { mande } from 'mande'
 
@@ -35,3 +35,6 @@ export const paginateCars = async (
     total
   }
 }
+
+export const getCar = (id: number) =>
+  garage.get<Car>(`/${id}`)
