@@ -1,3 +1,4 @@
+import { winnersAmountPerPage } from '@/constants/winners-amount-per-page'
 import {
   paginateWinnerCars,
   winners as winnersApi
@@ -22,7 +23,7 @@ export const useWinnersStore = defineStore(
     const loadWinners = async () => {
       const response = await paginateWinnerCars(
         page.value,
-        10
+        winnersAmountPerPage
       )
 
       winners.value = response.data
