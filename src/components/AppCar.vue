@@ -90,6 +90,7 @@ const animate = (time: number) => {
 
 const reset = () => {
   controller.abort(resetAbortReason)
+  handleReset()
 
   if (!animation) {
     return
