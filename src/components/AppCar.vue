@@ -214,6 +214,7 @@ watchEffect(() => {
   display: flex;
   gap: 0.3rem;
   margin: 0.5rem 0;
+  transition: opacity ease 0.3s;
 
   .btn {
     font-size: 0.8rem;
