@@ -182,14 +182,24 @@ watchEffect(() => {
     :style="{ opacity: raceInfo?.isRacing ? 0 : undefined }"
     v-if="props.controls"
   >
-    <button :enabled="isDriving" @click="emit('edit')">
+    <button
+      class="btn"
+      :enabled="isDriving"
+      @click="emit('edit')"
+    >
       Edit
     </button>
-    <button @click="emit('delete')">Delete</button>
-    <button :disabled="isDriving" @click="start">
+    <button class="btn" @click="emit('delete')">
+      Delete
+    </button>
+    <button
+      class="btn"
+      :disabled="isDriving"
+      @click="start"
+    >
       Start
     </button>
-    <button @click="reset">Reset</button>
+    <button class="btn" @click="reset">Reset</button>
   </div>
 </template>
 
@@ -197,6 +207,17 @@ watchEffect(() => {
 .car {
   border-radius: 25%;
   margin: 0.2rem 0;
+}
+
+.controls {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
 }
 
 .broken {
