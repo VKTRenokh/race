@@ -47,6 +47,7 @@ const raceInfo = reactive<RaceInfo>({
   }
 })
 
+// TODO: rename this RACE_INFO_KEY
 provide(RACE_INFO_KEY, raceInfo)
 
 garage.loadCars()
