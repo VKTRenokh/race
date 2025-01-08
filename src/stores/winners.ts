@@ -1,8 +1,11 @@
 import {
   paginateWinnerCars,
-  winners
+  winners as winnersApi
 } from '@/services/winners'
-import type { CreateWinnerDto } from '@/types/winners'
+import type {
+  CreateWinnerDto,
+  WinnerCar
+} from '@/types/winners'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -10,12 +13,20 @@ export const useWinnersStore = defineStore(
   'winners',
   () => {
     const page = ref(0)
+    const winners = ref<WinnerCar[]>([])
 
     // TODO: rename `CreateWinnerDto`
-    const add = (dto: CreateWinnerDto) => winners.post(dto)
+    const add = (dto: CreateWinnerDto) =>
+      winnersApi.post(dto)
 
-    const loadWinners = async () =>
-      paginateWinnerCars(page.value, 10)
+    const loadWinners = async () => {
+      const response = await paginateWinnerCars(
+        page.value,
+        10
+      )
+
+      winners.value = response.data
+    }
 
     return { add, loadWinners, page }
   }

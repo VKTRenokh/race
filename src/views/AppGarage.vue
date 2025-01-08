@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useGarageStore } from '@/stores/garage'
-import { useWinnersStore } from '@/stores/winners'
 import AppCar from '@/components/AppCar.vue'
 import CreateCarForm from '@/components/CreateCarForm.vue'
 import type { Car } from '@/types/car'
@@ -20,7 +19,6 @@ import { carsAmountPerPage } from '@/constants/cars-amount-per-page'
 const selectedCar = ref<Car>()
 
 const garage = useGarageStore()
-const winners = useWinnersStore()
 
 const finishers = ref<Car[]>([])
 
@@ -28,14 +26,24 @@ const winner = computed(() => finishers.value[0])
 
 const raceInfo = reactive<RaceInfo>({
   isRacing: false,
-  finish: car => {
+  finish: async car => {
     finishers.value.push(car)
 
     if (finishers.value.length !== 1) {
       return
     }
 
-    winners.add({ id: car.id, wins: 1, time: 1 })
+    const { useWinnersStore } = await import(
+      '@/stores/winners'
+    )
+
+    const winners = useWinnersStore()
+
+    winners.add({
+      id: car.id,
+      wins: 1,
+      time: 1
+    })
   }
 })
 
