@@ -16,9 +16,9 @@ export const useGarageStore = defineStore('garage', () => {
 
   const loadCars = () =>
     paginateCars(page.value, carsAmountPerPage)
-      .then(data => {
-        cars.value = data.cars
-        total.value = data.total
+      .then(response => {
+        cars.value = response.data
+        total.value = response.total
       })
       .catch(handleError)
 

@@ -1,6 +1,7 @@
 import { type Car } from '@/types/car'
 import { baseUrl } from '@/utils/base-url'
 import { mande } from 'mande'
+import { createPagination } from '@/utils/create-pagination'
 
 // TODO: Move this into separate file
 export interface PaginationResponse {
@@ -10,31 +11,7 @@ export interface PaginationResponse {
 
 export const garage = mande(baseUrl('/garage'))
 
-const totalCarsHeaderKey = 'X-Total-Count'
-
-export const paginateCars = async (
-  page: number,
-  perPage: number
-): Promise<PaginationResponse> => {
-  const response = await garage.get<Car[], 'response'>({
-    responseAs: 'response',
-    query: {
-      _page: page,
-      _limit: perPage
-    }
-  })
-
-  const cars = await response.json()
-
-  const total = +(
-    response.headers.get(totalCarsHeaderKey) ?? 0
-  )
-
-  return {
-    cars,
-    total
-  }
-}
+export const paginateCars = createPagination<Car>(garage)
 
 export const getCar = (id: number) =>
   garage.get<Car>(`/${id}`)
