@@ -7,5 +7,9 @@ winners.loadWinners().then(console.log)
 </script>
 
 <template>
-  <h2>aaa</h2>
+  <tr>
+    <td>First</td>
+    <td>Second</td>
+    <td>Third</td>
+  </tr>
 </template>
