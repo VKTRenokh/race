@@ -16,9 +16,6 @@ export const useWinnersStore = defineStore(
     const page = ref(0)
     const data = ref<WinnerCar[]>([])
 
-    const add = (dto: CreateWinnerDto) =>
-      winnersApi.post(dto)
-
     const loadWinners = async () => {
       const response = await paginateWinnerCars(
         page.value,
@@ -27,6 +24,9 @@ export const useWinnersStore = defineStore(
 
       data.value = response.data
     }
+
+    const add = (dto: CreateWinnerDto) =>
+      winnersApi.post(dto).then(loadWinners)
 
     return { add, loadWinners, page, data }
   }

@@ -130,7 +130,7 @@ const handleFinish = () => {
     return
   }
 
-  raceInfo.finish(props, duration)
+  raceInfo.finish(props, duration / 1000)
 }
 
 const start = async () => {
