@@ -14,9 +14,8 @@ export const useWinnersStore = defineStore(
   'winners',
   () => {
     const page = ref(0)
-    const winners = ref<WinnerCar[]>([])
+    const data = ref<WinnerCar[]>([])
 
-    // TODO: rename `CreateWinnerDto`
     const add = (dto: CreateWinnerDto) =>
       winnersApi.post(dto)
 
@@ -26,9 +25,9 @@ export const useWinnersStore = defineStore(
         winnersAmountPerPage
       )
 
-      winners.value = response.data
+      data.value = response.data
     }
 
-    return { add, loadWinners, page }
+    return { add, loadWinners, page, data }
   }
 )

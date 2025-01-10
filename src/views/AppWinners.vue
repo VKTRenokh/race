@@ -3,13 +3,13 @@ import { useWinnersStore } from '@/stores/winners'
 
 const winners = useWinnersStore()
 
-winners.loadWinners().then(console.log)
+winners.loadWinners()
 </script>
 
 <template>
-  <tr>
-    <td>First</td>
-    <td>Second</td>
-    <td>Third</td>
-  </tr>
+  <div>
+    <div v-for="winner of winners.data" :key="winner.id">
+      {{ winner.id }} {{ winner.name }} - {{ winner.time }}
+    </div>
+  </div>
 </template>
