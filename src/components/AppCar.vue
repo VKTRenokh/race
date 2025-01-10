@@ -126,11 +126,11 @@ const handleError = (e: unknown) => {
 }
 
 const handleFinish = () => {
-  if (!raceInfo?.isRacing) {
+  if (!raceInfo?.isRacing || !duration) {
     return
   }
 
-  raceInfo.finish(props)
+  raceInfo.finish(props, duration)
 }
 
 const start = async () => {

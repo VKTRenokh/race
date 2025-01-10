@@ -26,7 +26,7 @@ const winner = computed(() => finishers.value[0])
 
 const raceInfo = reactive<RaceInfo>({
   isRacing: false,
-  finish: async car => {
+  finish: async (car, time) => {
     finishers.value.push(car)
 
     if (finishers.value.length !== 1) {
@@ -42,7 +42,7 @@ const raceInfo = reactive<RaceInfo>({
     winners.add({
       id: car.id,
       wins: 1,
-      time: 1
+      time
     })
   }
 })
