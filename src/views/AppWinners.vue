@@ -10,7 +10,7 @@ winners.loadWinners()
   <div>
     <div v-for="winner of winners.data" :key="winner.id">
       {{ winner.id }} {{ winner.name }} -
-      {{ winner.time.toFixed(2) }}
+      {{ winner.time.toFixed(2) }} - {{ winner.wins }} wins
     </div>
   </div>
 </template>

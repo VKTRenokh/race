@@ -33,3 +33,18 @@ export const paginateWinnerCars = async (
 
   return { total: winners.total, data: cars }
 }
+
+export const getWinner = (id: number) =>
+  winners.get<CreateWinnerDto>(`/${id}`)
+
+export const updateWinner = async (
+  id: number,
+  time: number
+) => {
+  const winner = await getWinner(id)
+
+  return winners.put(`/${id}`, {
+    wins: winner.wins + 1,
+    time
+  })
+}
