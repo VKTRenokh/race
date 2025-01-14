@@ -11,24 +11,12 @@ import type { Car } from '../types/car'
 import { startEngine, driveCar } from '@/services/engine'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
-import { useWinnersStore } from '@/stores/winners'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
 const car = ref<HTMLElement>()
 
 const raceInfo = inject(RACE_INFO_KEY)
-
-// TODO: remove this later only for testing purposes
-const winners = useWinnersStore()
-
-const addWinner = () => {
-  winners.add({
-    id: props.id,
-    time: 10,
-    wins: 1
-  })
-}
 
 const isBroken = ref(false)
 const isDriving = ref(false)
@@ -213,8 +201,6 @@ watchEffect(() => {
       Start
     </button>
     <button class="btn" @click="reset">Reset</button>
-    <!-- NOTE: only for testing purposes, remove later -->
-    <button class="btn" @click="addWinner">win</button>
   </div>
 </template>
 
