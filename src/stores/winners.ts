@@ -24,6 +24,7 @@ export const useWinnersStore = defineStore(
         winnersAmountPerPage
       )
 
+      console.log(response.data)
       data.value = response.data
     }
 

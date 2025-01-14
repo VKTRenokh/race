@@ -175,7 +175,9 @@ watchEffect(() => {
 
 <template>
   <div :class="{ broken: isBroken }">
-    <h3 class="car-name">{{ props.name }}</h3>
+    <h3 v-if="props.controls" class="car-name">
+      {{ props.name }}
+    </h3>
     <div class="car" :style ref="car"></div>
   </div>
   <div
