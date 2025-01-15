@@ -10,11 +10,12 @@ export const createPagination =
   <T>(mande: MandeInstance) =>
   async (
     page: number,
-    limit: number
+    limit: number,
+    options?: Record<string, unknown>
   ): Promise<Paginated<T>> => {
     const response = await mande.get<T[], 'response'>({
       responseAs: 'response',
-      query: { _page: page, _limit: limit }
+      query: { _page: page, _limit: limit, ...options }
     })
 
     const total = +(response.headers.get(totalCount) ?? 0)

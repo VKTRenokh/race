@@ -12,7 +12,7 @@ import type {
 } from '@/types/winners'
 import { isInternalServerError } from '@/utils/is-internal-server-error'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, readonly } from 'vue'
 
 export const useWinnersStore = defineStore(
   'winners',
@@ -26,13 +26,14 @@ export const useWinnersStore = defineStore(
     const loadWinners = async () => {
       const response = await paginateWinnerCars(
         page.value,
-        winnersAmountPerPage
+        winnersAmountPerPage,
+        { method: sortMethod.value, order: sortOrder.value }
       )
 
       data.value = response.data
     }
 
-    const ifExistsBranch =
+    const update =
       (dto: CreateWinnerDto) => (error: unknown) => {
         if (!isInternalServerError(error)) {
           return
@@ -45,15 +46,26 @@ export const useWinnersStore = defineStore(
       winnersApi
         .post(dto)
         .then(loadWinners)
-        .catch(ifExistsBranch(dto))
+        .catch(update(dto))
+
+    const setSortMethod = async (value: SortMethod) => {
+      sortMethod.value = value
+      await loadWinners()
+    }
+
+    const setSortOrder = (value: SortOrder) => {
+      sortOrder.value = value
+    }
 
     return {
       add,
       loadWinners,
       page,
       data,
-      sortMethod,
-      sortOrder
+      sortMethod: readonly(sortMethod),
+      sortOrder: readonly(sortOrder),
+      setSortMethod,
+      setSortOrder
     }
   }
 )
