@@ -8,7 +8,11 @@ import {
   watchEffect
 } from 'vue'
 import type { Car } from '../types/car'
-import { startEngine, driveCar } from '@/services/engine'
+import {
+  startEngine,
+  driveCar,
+  type StartEngineResponse
+} from '@/services/engine'
 import { RACE_INFO_KEY } from '@/constants/race-info-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
 
@@ -128,14 +132,17 @@ const handleFinish = () => {
   raceInfo.finish(props, duration / 1000)
 }
 
+const calculateDuration = (response: StartEngineResponse) =>
+  response.distance / response.velocity
+
 const start = async () => {
   controller = raceInfo?.controller ?? new AbortController()
 
   isDriving.value = true
 
-  const info = await startEngine(props.id)
+  const response = await startEngine(props.id)
 
-  duration = info.distance / info.velocity
+  duration = calculateDuration(response)
 
   animation = requestAnimationFrame(animate)
 
