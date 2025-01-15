@@ -3,7 +3,7 @@ import { useWinnersStore } from '@/stores/winners'
 import Car from '@/components/AppCar.vue'
 import type { SortMethod } from '@/types/sort-method'
 import type { SortOrder } from '@/types/sort-order'
-import { watchEffect } from 'vue'
+import { watchEffect, ref } from 'vue'
 
 const winners = useWinnersStore()
 
@@ -27,7 +27,12 @@ watchEffect(() => {
     >
       {{ winner.id }} {{ winner.name }} -
       {{ winner.time.toFixed(2) }} - {{ winner.wins }} wins
-      <Car v-bind="winner" />
+
+      <Car
+        :name="winner.name"
+        :color="winner.color"
+        :id="winner.id"
+      />
     </div>
 
     <select

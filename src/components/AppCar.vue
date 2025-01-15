@@ -16,7 +16,9 @@ const props = defineProps<Car & { controls?: boolean }>()
 
 const car = ref<HTMLElement>()
 
-const raceInfo = inject(RACE_INFO_KEY)
+const raceInfo = props.controls
+  ? inject(RACE_INFO_KEY)
+  : null
 
 const isBroken = ref(false)
 const isDriving = ref(false)
@@ -178,7 +180,7 @@ watchEffect(() => {
     <h3 v-if="props.controls" class="car-name">
       {{ props.name }}
     </h3>
-    <div class="car" :style ref="car"></div>
+    <div class="car" :style ref="car" />
   </div>
   <div
     class="controls"
