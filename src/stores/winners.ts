@@ -5,6 +5,7 @@ import {
   winners as winnersApi
 } from '@/services/winners'
 import type { SortMethod } from '@/types/sort-method'
+import type { SortOrder } from '@/types/sort-order'
 import type {
   CreateWinnerDto,
   WinnerCar
@@ -18,7 +19,9 @@ export const useWinnersStore = defineStore(
   () => {
     const page = ref(0)
     const data = ref<WinnerCar[]>([])
+
     const sortMethod = ref<SortMethod>()
+    const sortOrder = ref<SortOrder>()
 
     const loadWinners = async () => {
       const response = await paginateWinnerCars(
@@ -44,6 +47,13 @@ export const useWinnersStore = defineStore(
         .then(loadWinners)
         .catch(ifExistsBranch(dto))
 
-    return { add, loadWinners, page, data, sortMethod }
+    return {
+      add,
+      loadWinners,
+      page,
+      data,
+      sortMethod,
+      sortOrder
+    }
   }
 )

@@ -3,6 +3,7 @@ import { useWinnersStore } from '@/stores/winners'
 import Car from '@/components/AppCar.vue'
 import type { SortMethod } from '@/types/sort-method'
 import type { SortOrder } from '@/types/sort-order'
+import { watchEffect } from 'vue'
 
 const winners = useWinnersStore()
 
@@ -11,6 +12,10 @@ const sortMethods: SortMethod[] = ['id', 'time', 'wins']
 const sortOrders: NonNullable<SortOrder>[] = ['ASC', 'DESC']
 
 winners.loadWinners()
+
+watchEffect(() => {
+  console.log(winners.sortOrder, winners.sortMethod)
+})
 </script>
 
 <template>
@@ -25,8 +30,14 @@ winners.loadWinners()
       <Car v-bind="winner" />
     </div>
 
-    <select name="sort method" id="sortMethod">
-      <option value="" selected>Sort method</option>
+    <select
+      v-model="winners.sortMethod"
+      name="sort method"
+      id="sortMethod"
+    >
+      <option value="Sort method" selected disabled>
+        Sort method
+      </option>
       <option
         v-for="sortMethod of sortMethods"
         :value="sortMethod"
@@ -36,7 +47,12 @@ winners.loadWinners()
       </option>
     </select>
 
-    <select name="sort order" id="sortOrder" v-once>
+    <select
+      v-model="winners.sortOrder"
+      name="sort order"
+      id="sortOrder"
+      v-once
+    >
       <option value="" selected>Sort order</option>
       <option
         v-for="sortOrder of sortOrders"
