@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  reactive,
+  computed,
   toRefs,
   ref,
   getCurrentInstance,
@@ -14,14 +14,14 @@ import { resetAbortReason } from '@/constants/reset-abort-reason'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
-const car = ref<HTMLElement>()
-
 const raceInfo = props.controls
   ? inject(RACE_INFO_KEY)
   : null
 
 const isBroken = ref(false)
 const isDriving = ref(false)
+
+const left = ref(0)
 
 let controller: AbortController
 
@@ -32,11 +32,12 @@ const emit = defineEmits<{
 
 const carSize = 50
 
-const style = reactive({
+const style = computed(() => ({
   backgroundColor: props.color,
   width: `${carSize}px`,
-  height: `${carSize}px`
-})
+  height: `${carSize}px`,
+  transform: `translate(${left.value}px)`
+}))
 
 const instance = getCurrentInstance()
 
@@ -44,14 +45,6 @@ const instance = getCurrentInstance()
 let animation: number | null = null
 let startTime: number | null = null
 let duration: number | null = null
-
-const moveCar = (left: number) => {
-  if (!car.value) {
-    return
-  }
-
-  car.value.style.transform = `translateX(${left}px)`
-}
 
 const calculateLeft = (
   progress: number,
@@ -81,7 +74,7 @@ const animate = (time: number) => {
 
   const element = instance.parent.vnode.el
 
-  moveCar(calculateLeft(progress, element.clientWidth))
+  left.value = calculateLeft(progress, element.clientWidth)
 
   if (runTime > duration) {
     return
@@ -102,7 +95,7 @@ const reset = () => {
 }
 
 const handleReset = () => {
-  moveCar(0)
+  left.value = 0
 
   isBroken.value = false
   isDriving.value = false
@@ -180,7 +173,7 @@ watchEffect(() => {
     <h3 v-if="props.controls" class="car-name">
       {{ props.name }}
     </h3>
-    <div class="car" :style ref="car" />
+    <div class="car" :style />
   </div>
   <div
     class="controls"

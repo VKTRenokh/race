@@ -3,7 +3,7 @@ import { useWinnersStore } from '@/stores/winners'
 import Car from '@/components/AppCar.vue'
 import type { SortMethod } from '@/types/sort-method'
 import type { SortOrder } from '@/types/sort-order'
-import { watchEffect, ref } from 'vue'
+import { watchEffect } from 'vue'
 
 const winners = useWinnersStore()
 
