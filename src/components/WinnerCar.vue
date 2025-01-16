@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { WinnerCar } from '@/types/winners'
 import Car from '@/components/AppCar.vue'
+import { computed } from 'vue'
 
 const props = defineProps<WinnerCar>()
+
+const time = computed(() => props.time.toFixed(2))
 </script>
 
 <template>
   <div class="winner">
-    {{ props.id }} {{ props.name }} -
-    {{ props.time.toFixed(2) }} - {{ props.wins }} wins
+    {{ props.id }} {{ props.name }} - {{ time }} -
+    {{ props.wins }} wins
 
     <Car
       :name="props.name"
