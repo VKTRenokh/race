@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWinnersStore } from '@/stores/winners'
-import Car from '@/components/AppCar.vue'
+import WinnerCar from '@/components/WinnerCar.vue'
 import WinnersControls from '@/components/WinnersControls.vue'
 
 const winners = useWinnersStore()
@@ -13,21 +13,11 @@ winners.loadWinners()
     <winners-controls />
 
     <div>
-      <div
-        class="winner"
+      <winner-car
         v-for="winner of winners.data"
         :key="winner.id"
-      >
-        {{ winner.id }} {{ winner.name }} -
-        {{ winner.time.toFixed(2) }} -
-        {{ winner.wins }} wins
-
-        <Car
-          :name="winner.name"
-          :color="winner.color"
-          :id="winner.id"
-        />
-      </div>
+        v-bind="winner"
+      />
     </div>
   </div>
 </template>
