@@ -21,7 +21,7 @@ export const useWinnersStore = defineStore(
     const data = ref<WinnerCar[]>([])
 
     const sortMethod = ref<SortMethod>()
-    const sortOrder = ref<SortOrder>()
+    const sortOrder = ref<SortOrder>('ASC')
 
     const loadWinners = async () => {
       const response = await paginateWinnerCars(

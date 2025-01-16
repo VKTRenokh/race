@@ -2,13 +2,10 @@
 import { useWinnersStore } from '@/stores/winners'
 import Car from '@/components/AppCar.vue'
 import type { SortMethod } from '@/types/sort-method'
-import type { SortOrder } from '@/types/sort-order'
 
 const winners = useWinnersStore()
 
 const sortMethods: SortMethod[] = ['id', 'time', 'wins']
-
-const sortOrders: NonNullable<SortOrder>[] = ['ASC', 'DESC']
 
 winners.loadWinners()
 
@@ -33,53 +30,53 @@ const onSortOrderChange = (event: Event) => {
 
 <template>
   <div>
-    <div
-      class="winner"
-      v-for="winner of winners.data"
-      :key="winner.id"
-    >
-      {{ winner.id }} {{ winner.name }} -
-      {{ winner.time.toFixed(2) }} - {{ winner.wins }} wins
+    <div class="sort-options">
+      <select
+        name="sort method"
+        id="sortMethod"
+        @change="onSortMethodChange"
+      >
+        <option value="Sort method" selected disabled>
+          Sort method
+        </option>
+        <option
+          v-for="sortMethod of sortMethods"
+          :value="sortMethod"
+          :key="sortMethod"
+        >
+          {{ sortMethod }}
+        </option>
+      </select>
 
-      <Car
-        :name="winner.name"
-        :color="winner.color"
-        :id="winner.id"
-      />
+      <select
+        name="sort order"
+        id="sortOrder"
+        v-once
+        @change="onSortOrderChange"
+      >
+        <option value="" disabled>Sort order</option>
+        <option value="ASC" selected>Ascending</option>
+        <option value="DESC">Descending</option>
+      </select>
     </div>
 
-    <select
-      name="sort method"
-      id="sortMethod"
-      @change="onSortMethodChange"
-    >
-      <option value="Sort method" selected disabled>
-        Sort method
-      </option>
-      <option
-        v-for="sortMethod of sortMethods"
-        :value="sortMethod"
-        :key="sortMethod"
+    <div>
+      <div
+        class="winner"
+        v-for="winner of winners.data"
+        :key="winner.id"
       >
-        {{ sortMethod }}
-      </option>
-    </select>
+        {{ winner.id }} {{ winner.name }} -
+        {{ winner.time.toFixed(2) }} -
+        {{ winner.wins }} wins
 
-    <select
-      name="sort order"
-      id="sortOrder"
-      v-once
-      @change="onSortOrderChange"
-    >
-      <option value="" selected disabled>Sort order</option>
-      <option
-        v-for="sortOrder of sortOrders"
-        :key="sortOrder"
-        :value="sortOrder"
-      >
-        {{ sortOrder.toLowerCase() }}
-      </option>
-    </select>
+        <Car
+          :name="winner.name"
+          :color="winner.color"
+          :id="winner.id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -88,5 +85,21 @@ const onSortOrderChange = (event: Event) => {
   border-top: var(--color-background-soft) 5px solid;
   margin-top: 10px;
   padding-top: 4px;
+}
+
+.sort-options {
+  margin-bottom: 1.1rem;
+  margin-top: 1.1rem;
+
+  select {
+    background-color: var(--background-color-soft);
+    border: var(--color-border) solid 1px;
+    color: var(--color-text);
+    font-size: 1rem;
+    padding: 0.3rem 0.4rem;
+    border-radius: 8px;
+    outline: none;
+    margin-right: 5px;
+  }
 }
 </style>
