@@ -10,8 +10,10 @@ const time = computed(() => props.time.toFixed(2))
 
 <template>
   <div class="winner">
-    {{ props.id }} {{ props.name }} - {{ time }} -
-    {{ props.wins }} wins
+    <h4>
+      {{ props.id }} {{ props.name }} - {{ time }} -
+      {{ props.wins }} wins
+    </h4>
 
     <Car
       :name="props.name"
