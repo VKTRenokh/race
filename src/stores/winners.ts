@@ -53,8 +53,9 @@ export const useWinnersStore = defineStore(
       await loadWinners()
     }
 
-    const setSortOrder = (value: SortOrder) => {
+    const setSortOrder = async (value: SortOrder) => {
       sortOrder.value = value
+      await loadWinners()
     }
 
     return {

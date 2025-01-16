@@ -20,6 +20,15 @@ const onSortMethodChange = (event: Event) => {
   // @ts-expect-error
   winners.setSortMethod(event.target.value)
 }
+
+const onSortOrderChange = (event: Event) => {
+  if (!(event.target instanceof HTMLSelectElement)) {
+    return
+  }
+
+  // @ts-expect-error
+  winners.setSortOrder(event.target.value)
+}
 </script>
 
 <template>
@@ -56,7 +65,12 @@ const onSortMethodChange = (event: Event) => {
       </option>
     </select>
 
-    <select name="sort order" id="sortOrder" v-once>
+    <select
+      name="sort order"
+      id="sortOrder"
+      v-once
+      @change="onSortOrderChange"
+    >
       <option value="" selected disabled>Sort order</option>
       <option
         v-for="sortOrder of sortOrders"
