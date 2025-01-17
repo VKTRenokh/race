@@ -1,5 +1,8 @@
 # race
 
+![Performance showcase](.github/performance-1.png)
+![Performance showcase 2](.github/performance-2.png)
+
 ## Technical requirements
 
 https://github.com/rolling-scopes-school/tasks/tree/master/stage2/tasks/async-race
