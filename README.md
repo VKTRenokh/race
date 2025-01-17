@@ -1,6 +1,9 @@
-# .
+# race
+
+## Technical requirements
 
 https://github.com/rolling-scopes-school/tasks/tree/master/stage2/tasks/async-race
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup

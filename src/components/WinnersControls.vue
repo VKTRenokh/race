@@ -26,16 +26,16 @@ const onChange =
     key: T,
     validator: (value: unknown) => value is B
   ) =>
-  (event: Event) => {
+  ({ target }: Event) => {
     if (
-      !isSelectElement(event.target) ||
-      !validator(event.target.value)
+      !isSelectElement(target) ||
+      !validator(target.value)
     ) {
       return
     }
 
     // @ts-expect-error
-    options[key] = event.target.value
+    options[key] = target.value
 
     emit('update', options)
   }
