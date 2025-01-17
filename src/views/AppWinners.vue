@@ -2,15 +2,25 @@
 import { useWinnersStore } from '@/stores/winners'
 import WinnerCar from '@/components/WinnerCar.vue'
 import WinnersControls from '@/components/WinnersControls.vue'
+import type { SortOptions } from '@/types/sort-options'
 
 const winners = useWinnersStore()
 
 winners.loadWinners()
+
+const handleSortingOptionsChange = (
+  sortOptions: SortOptions
+) => {
+  winners.setSortMethod(sortOptions.method)
+  winners.setSortOrder(sortOptions.order)
+}
 </script>
 
 <template>
   <div>
-    <winners-controls />
+    <winners-controls
+      @update="handleSortingOptionsChange"
+    />
 
     <div>
       <winner-car

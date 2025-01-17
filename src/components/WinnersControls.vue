@@ -1,18 +1,45 @@
 <script setup lang="ts">
-import type { SortMethod } from '@/types/sort-method'
+import {
+  type SortMethod,
+  isSortMethod
+} from '@/types/sort-method'
+import { isSortOrder } from '@/types/sort-order'
+import { type SortOptions } from '@/types/sort-options'
+import { reactive } from 'vue'
+import { isSelectElement } from '@/utils/is-select-element'
+
+const options = reactive<SortOptions>({
+  order: 'ASC'
+})
+
+const emit = defineEmits<{
+  (e: 'update', options: SortOptions): void
+}>()
 
 const sortMethods: SortMethod[] = ['id', 'time', 'wins']
 
 const onSortMethodChange = (event: Event) => {
-  if (!(event.target instanceof HTMLSelectElement)) {
+  if (
+    !isSelectElement(event.target) ||
+    !isSortMethod(event.target.value)
+  ) {
     return
   }
+
+  options.method = event.target.value
 }
 
 const onSortOrderChange = (event: Event) => {
-  if (!(event.target instanceof HTMLSelectElement)) {
+  if (
+    !isSelectElement(event.target) ||
+    !isSortOrder(event.target.value)
+  ) {
     return
   }
+
+  options.order = event.target.value
+
+  emit('update', options)
 }
 </script>
 
