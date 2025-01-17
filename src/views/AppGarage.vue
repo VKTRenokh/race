@@ -128,6 +128,7 @@ watch(
         </span>
       </div>
 
+      <!-- TODO: remove this -->
       <app-car
         v-for="car of garage.cars"
         :key="car.id"

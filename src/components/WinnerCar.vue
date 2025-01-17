@@ -15,7 +15,7 @@ const time = computed(() => props.time.toFixed(2))
       >{{ props.wins }} wins - best time {{ time }}</span
     >
 
-    <Car
+    <car
       :name="props.name"
       :color="props.color"
       :id="props.id"
