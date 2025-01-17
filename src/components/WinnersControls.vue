@@ -18,29 +18,31 @@ const emit = defineEmits<{
 
 const sortMethods: SortMethod[] = ['id', 'time', 'wins']
 
-const onSortMethodChange = (event: Event) => {
-  if (
-    !isSelectElement(event.target) ||
-    !isSortMethod(event.target.value)
-  ) {
-    return
+const onChange =
+  <
+    T extends keyof SortOptions,
+    B = SortOptions[T] | undefined
+  >(
+    key: T,
+    validator: (value: unknown) => value is B
+  ) =>
+  (event: Event) => {
+    if (
+      !isSelectElement(event.target) ||
+      !validator(event.target.value)
+    ) {
+      return
+    }
+
+    // @ts-expect-error
+    options[key] = event.target.value
+
+    emit('update', options)
   }
 
-  options.method = event.target.value
-}
+const onSortMethodChange = onChange('method', isSortMethod)
 
-const onSortOrderChange = (event: Event) => {
-  if (
-    !isSelectElement(event.target) ||
-    !isSortOrder(event.target.value)
-  ) {
-    return
-  }
-
-  options.order = event.target.value
-
-  emit('update', options)
-}
+const onSortOrderChange = onChange('order', isSortOrder)
 </script>
 
 <template>
