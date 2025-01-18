@@ -10,7 +10,10 @@ const time = computed(() => props.time.toFixed(2))
 
 <template>
   <div class="winner">
-    <h4>{{ props.id }} {{ props.name }}</h4>
+    <h4>
+      <span class="green">{{ props.id }}</span>
+      {{ props.name }}
+    </h4>
     <span
       >{{ props.wins }} wins - best time {{ time }}</span
     >
@@ -28,5 +31,9 @@ const time = computed(() => props.time.toFixed(2))
   border-top: var(--color-background-soft) 5px solid;
   margin-top: 10px;
   padding-top: 4px;
+
+  .green {
+    padding: 0.1rem;
+  }
 }
 </style>

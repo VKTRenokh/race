@@ -1,7 +1,7 @@
 import { winnersAmountPerPage } from '@/constants/winners-amount-per-page'
 import {
   paginateWinnerCars,
-  updateWinner,
+  updateWins,
   winners as winnersApi
 } from '@/services/winners'
 import type { SortMethod } from '@/types/sort-method'
@@ -39,7 +39,7 @@ export const useWinnersStore = defineStore(
           return
         }
 
-        return updateWinner(dto.id, dto.time)
+        return updateWins(dto.id, dto.time)
       }
 
     const add = (dto: CreateWinnerDto) =>

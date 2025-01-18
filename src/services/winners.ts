@@ -46,8 +46,7 @@ export const paginateWinnerCars = async (
 export const getWinner = (id: number) =>
   winners.get<CreateWinnerDto>(`/${id}`)
 
-// TODO: rename this function
-export const updateWinner = async (
+export const updateWins = async (
   id: number,
   time: number
 ) => {
