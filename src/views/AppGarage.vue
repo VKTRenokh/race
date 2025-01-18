@@ -11,8 +11,8 @@ import {
   computed
 } from 'vue'
 import Pagination from '@/components/Pagination.vue'
-import type { RaceInfo } from '@/types/race-info'
-import { RACE_INFO_KEY } from '@/constants/race-info-key'
+import type { Race } from '@/types/race'
+import { RACE_KEY } from '@/constants/race-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
 import { carsAmountPerPage } from '@/constants/cars-amount-per-page'
 
@@ -24,7 +24,7 @@ const finishers = ref<Car[]>([])
 
 const winner = computed(() => finishers.value[0])
 
-const raceInfo = reactive<RaceInfo>({
+const raceInfo = reactive<Race>({
   isRacing: false,
   finish: async (car, time) => {
     finishers.value.push(car)
@@ -48,7 +48,7 @@ const raceInfo = reactive<RaceInfo>({
 })
 
 // TODO: rename this RACE_INFO_KEY
-provide(RACE_INFO_KEY, raceInfo)
+provide(RACE_KEY, raceInfo)
 
 garage.loadCars()
 

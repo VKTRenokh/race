@@ -13,14 +13,12 @@ import {
   driveCar,
   type StartEngineResponse
 } from '@/services/engine'
-import { RACE_INFO_KEY } from '@/constants/race-info-key'
+import { RACE_KEY } from '@/constants/race-key'
 import { resetAbortReason } from '@/constants/reset-abort-reason'
 
 const props = defineProps<Car & { controls?: boolean }>()
 
-const raceInfo = props.controls
-  ? inject(RACE_INFO_KEY)
-  : null
+const raceInfo = props.controls ? inject(RACE_KEY) : null
 
 const isBroken = ref(false)
 const isDriving = ref(false)
