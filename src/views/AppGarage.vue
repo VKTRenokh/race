@@ -24,7 +24,7 @@ const finishers = ref<Car[]>([])
 
 const winner = computed(() => finishers.value[0])
 
-const raceInfo = reactive<Race>({
+const race = reactive<Race>({
   isRacing: false,
   finish: async (car, time) => {
     finishers.value.push(car)
@@ -47,8 +47,7 @@ const raceInfo = reactive<Race>({
   }
 })
 
-// TODO: rename this RACE_INFO_KEY
-provide(RACE_KEY, raceInfo)
+provide(RACE_KEY, race)
 
 garage.loadCars()
 
@@ -64,20 +63,20 @@ const deleteCar = (id: number) =>
 const selectCar = (car: Car) => (selectedCar.value = car)
 
 const startRace = () => {
-  raceInfo.isRacing = true
-  raceInfo.controller = new AbortController()
+  race.isRacing = true
+  race.controller = new AbortController()
 }
 
 const reset = () => {
-  if (!raceInfo.controller) {
+  if (!race.controller) {
     return
   }
 
-  raceInfo.controller.abort(resetAbortReason)
+  race.controller.abort(resetAbortReason)
 
   finishers.value = []
 
-  raceInfo.isRacing = false
+  race.isRacing = false
 }
 
 watch(
@@ -108,7 +107,7 @@ watch(
         <button
           class="btn"
           @click="startRace"
-          :disabled="raceInfo.isRacing"
+          :disabled="race.isRacing"
         >
           Race
         </button>
@@ -128,7 +127,6 @@ watch(
         </span>
       </div>
 
-      <!-- TODO: remove this -->
       <app-car
         v-for="car of garage.cars"
         :key="car.id"

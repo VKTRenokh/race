@@ -134,6 +134,8 @@ const calculateDuration = (response: StartEngineResponse) =>
   response.distance / response.velocity
 
 const start = async () => {
+  // TODO: split this function
+
   controller = raceInfo?.controller ?? new AbortController()
 
   isDriving.value = true
